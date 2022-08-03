@@ -8,7 +8,7 @@ clear, clc, close all
 faceNoseDetector = vision.CascadeObjectDetector('Nose');
 
 % Read a video frame and run the face detector.
-videoReader = VideoReader(['FinnianFelon.mp4']);
+videoReader = VideoReader('testvideos/video1.mp4');
 videoFrame      = readFrame(videoReader);
 bboxNose            = step(faceNoseDetector, videoFrame);
 
