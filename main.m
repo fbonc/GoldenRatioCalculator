@@ -1,65 +1,38 @@
 clear, clc, close all
 
+getWidthOfGrayscaleFeature('EyePairBig', false);
+getWidthOfGrayscaleFeature('Mouth', true);
 
-%% Eyes Detector
+function width = getWidthOfGrayscaleFeature(feature, mergeThresholdBool)
+    % Select a certain facial feature.
+    if mergeThresholdBool
+        faceDetector = vision.CascadeObjectDetector(feature, 'MergeThreshold', 300);
+    else
+        faceDetector = vision.CascadeObjectDetector(feature);
+    end
+    
+    % Read a video frame and run the face detector.
+    videoReader = VideoReader('FinnianFelon.mp4');
+    videoFrame = readFrame(videoReader);
+    bbox = step(faceDetector, videoFrame);
+    featureImage = imcrop(videoFrame,bbox);
+    figure
+    subplot(2, 1, 1)
+    imshow(featureImage)
+    bwImage = imcomplement(im2bw(featureImage));
+    subplot(2, 1, 2)
+    imshow(bwImage)
+    
+    % Get width of feature in pixels.
+    
+    [LeftY, LeftX] = find(bwImage, 1, 'first');
+    [RightY, RightX] = find(bwImage, 1, 'last');
+    
+    width = RightX - LeftX;
 
-% Create a cascade detector object.
-faceDetector = vision.CascadeObjectDetector('EyePairBig');
+    x = LeftX:1:RightX;
 
-% Read a video frame and run the face detector.
-videoReader = VideoReader(['FinnianFelon.mp4']);
-videoFrame      = readFrame(videoReader);
-bbox            = step(faceDetector, videoFrame)
-
-% Draw the returned bounding box around the det ected face.
-videoFrame = insertShape(videoFrame, 'Rectangle', bbox);
-figure; imshow(videoFrame); title('Detected face');
-
-
-figure
-eyesImage = imcrop(videoFrame,bbox);
-bwEyesImage = imcomplement(im2bw(eyesImage));
-imshow(bwEyesImage)
-
-% COPIED
-
-[ y, x] = find( bwEyesImage);
-points = [ x y];
-[d,idx] = pdist2( points, points, 'euclidean', 'Largest', 1);
-idx1 = idx( d==max(d));
-[~,idx2] = find(d==max( d));
-
-p={};
-for i=1:length(idx1)
-   p{end+1} = [ points(idx1(i),1), points(idx1(i),2), points(idx2(i),1), points(idx2(i),2)];
+    yMidpoint = height(bwImage) / 2;
+    y = yMidpoint .* ones(1, length(x));
+    line(x, y, 'Color', 'red', 'LineWidth', 4)
 end
-
-figure; 
-imshow( bwEyesImage);
-hold on;
-for i=1:numel(p)
-    line( [ p{i}(1), p{i}(3)], [p{i}(2), p{i}(4)]);
-    hdl = get(gca,'Children');
-    set( hdl(1),'LineWidth',2);
-    set( hdl(1),'color',[1 0 0]);
-end
-hold off;
-
-% END OF COPIED
-
-EyesWidth = p{1}
-distanceEyes = sqrt((EyesWidth(1) - EyesWidth(3))^2 + (EyesWidth(2) - EyesWidth(4))^2)
-
-
-%{
-
-% Face Detector
-faceDetector = vision.CascadeObjectDetector();
-FaceHeight = bbox(1,4)
-
-
-
-eyesDetector = vision.CascadeObjectDetector('EyePairBig');
-
-
-%}
