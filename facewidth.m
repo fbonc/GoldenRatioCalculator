@@ -10,7 +10,7 @@ faceDetector = vision.CascadeObjectDetector('Nose');
 % Read a video frame and run the face detector.
 videoReader = VideoReader(['FinnianFelon.mp4']);
 videoFrame      = readFrame(videoReader);
-bbox            = step(faceDetector, videoFrame)
+bbox            = step(faceDetector, videoFrame);
 
 % Draw the returned bounding box around the det ected face.
 videoFrame = insertShape(videoFrame, 'Rectangle', bbox);
@@ -26,15 +26,15 @@ noseRight = [(bbox(1)+bbox(3)) bbox(2)];
 
 for i=noseLeft(1):-1:1
     if bwFace(noseLeft(2), i) == 0
-        leftEdge = [i,noseLeft(2)]
+        leftEdge = [i,noseLeft(2)];
         break
     end
 end
 
-sizeFace = size(bwFace)
+sizeFace = size(bwFace);
 for i=noseRight(1):sizeFace(2)
     if bwFace(noseRight(2),i) == 0
-        rightEdge = [i,noseRight(2)]
+        rightEdge = [i,noseRight(2)];
         break
     end
 end
