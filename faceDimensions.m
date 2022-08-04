@@ -28,7 +28,7 @@ imshow(featureImage)
 
 noseLeft = [bboxNose(1) , bboxNose(2)];
 noseRight = [(bboxNose(1)+bboxNose(3)) , bboxNose(2)];
-
+widthNose = bboxNose(3)
 
 for i=noseLeft(1):-1:1
     if bwFace(noseLeft(2), i) == 0
