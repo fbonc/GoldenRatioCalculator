@@ -1,12 +1,12 @@
 clear, clc, close all
 %eyes
-[eyesWidth, eyesHeight] = getSizeOfGrayscaleFeature('EyePairBig', false)
+[eyesWidth, eyesHeight, eyesLocation] = getSizeOfGrayscaleFeature('EyePairBig', false)
 
 %mouth
-[mouthWidth, mouthHeight] = getSizeOfGrayscaleFeature('Mouth', true)
+[mouthWidth, mouthHeight, mouthLocation] = getSizeOfGrayscaleFeature('Mouth', true)
 
 %nose
-[noseWidth, noseHeight] = getSizeOfGrayscaleFeature('Nose', false)
+[noseWidth, noseHeight, noseLocation] = getSizeOfGrayscaleFeature('Nose', false)
 
 %face width and height
 videoReader = VideoReader('testvideos/video1.mp4');
@@ -79,7 +79,7 @@ faceWidth = rightEdge(1) - leftEdge(1)
 
 
 
-function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, mergeThresholdBool)
+function [widthOfFeature, heightOfFeature, centerOfBBox] = getSizeOfGrayscaleFeature(feature, mergeThresholdBool)
     % Select a certain facial feature.
     if mergeThresholdBool
         faceDetector = vision.CascadeObjectDetector(feature, 'MergeThreshold', 300);
@@ -132,6 +132,10 @@ function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, 
     bwImage = flip(bwImage);
     yVals(1, 2) = (height(bwImage) - yVals(1, 2));
     heightOfFeature = yVals(1, 2) - yVals(1, 1);
+    
+    bboxX = bbox(1) + (bbox(3) / 2);
+    bboxY = bbox(2) + (bbox(4) / 2);
+    centerOfBBox = [bboxX, bboxY];
 
     y = yVals(1, 1):1:yVals(1, 2);
     xMidpoint = width(bwImage) / 2;
