@@ -2,7 +2,7 @@ clear, clc, close all
 
 [eyesWidth, eyesHeight] = getSizeOfGrayscaleFeature('EyePairBig', false)
 [mouthWidth, mouthHeight] = getSizeOfGrayscaleFeature('Mouth', true)
-[noseWidth, noseHeight] = getSizeOfGrayscaleFeature('Nose', true)
+[noseWidth, noseHeight] = getSizeOfGrayscaleFeature('Nose', false)
 
 function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, mergeThresholdBool)
     % Select a certain facial feature.
