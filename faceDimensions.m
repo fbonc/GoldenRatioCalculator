@@ -14,7 +14,7 @@ bboxNose            = step(faceNoseDetector, videoFrame);
 
 % Draw the returned bounding box around the det ected face.
 videoFrameNose = insertShape(videoFrame, 'Rectangle', bboxNose);
-figure; imshow(videoFrameNose); title('Detected face');
+
 
 
 bwFace = im2bw(videoFrameNose);
