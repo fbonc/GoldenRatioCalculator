@@ -10,11 +10,11 @@ clear, clc, close all
 
 %face width and height
 videoReader = VideoReader('testvideos/video1.mp4');
-videoFrame      = readFrame(videoReader);
+videoFrame = readFrame(videoReader);
 
 
 faceNoseDetector = vision.CascadeObjectDetector("ClassificationModel",'Nose',"MaxSize",[50 50]);
-bboxNose            = step(faceNoseDetector, videoFrame);
+bboxNose = step(faceNoseDetector, videoFrame);
 
 
 % Draw the returned bounding box around the det ected face.
@@ -74,6 +74,17 @@ end
 %face width
 
 faceWidth = rightEdge(1) - leftEdge(1) 
+
+
+
+
+
+
+%pupiltolip
+pupilToLip = mouthLocation(2) - eyesLocation(2)
+
+%nosetochin
+noseToChin = bboxFace(2) + bboxFace(4) - noseLocation(2)
 
 
 
