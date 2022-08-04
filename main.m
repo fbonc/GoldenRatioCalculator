@@ -56,7 +56,7 @@ function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, 
 
     bwImage = flip(bwImage);
     yVals(1, 2) = (height(bwImage) - yVals(1, 2));
-    heightOfFeature = yVals(1, 1) - yVals(1, 2);
+    heightOfFeature = yVals(1, 2) - yVals(1, 1);
 
     y = yVals(1, 1):1:yVals(1, 2);
     xMidpoint = width(bwImage) / 2;
