@@ -1,4 +1,4 @@
-function [faceWidth, faceHeight, bboxFace, bboxNose] = getFacialDimensions(videoFilename)
+function [faceWidth, faceHeight, bboxFace, bboxNose, chinLocation] = getFacialDimensions(videoFilename)
     videoReader = VideoReader(videoFilename);
     videoFrame = readFrame(videoReader);
     
@@ -40,7 +40,7 @@ function [faceWidth, faceHeight, bboxFace, bboxNose] = getFacialDimensions(video
     subplot(2,1,2)
     imshow(videoFrame); title('Detected face');
     
-    faceHeight = bboxFace(4)
+    faceHeight = bboxFace(4);
     
     if ~exist("leftEdge")
         disp(bboxNose)
@@ -51,7 +51,8 @@ function [faceWidth, faceHeight, bboxFace, bboxNose] = getFacialDimensions(video
         disp(bboxNose)
         rightEdge = [bboxFace(1) + bboxFace(3) ,noseRight(2)];
     end
+
+    faceWidth = rightEdge(1) - leftEdge(1);
     
-    % Face width
-    faceWidth = rightEdge(1) - leftEdge(1)
+    chinLocation = bboxFace(2) + bboxFace(4);
 end
