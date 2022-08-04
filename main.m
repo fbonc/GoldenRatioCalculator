@@ -1,7 +1,8 @@
 clear, clc, close all
 
-getSizeOfGrayscaleFeature('EyePairBig', false);
-getSizeOfGrayscaleFeature('Mouth', true);
+[eyesWidth, eyesHeight] = getSizeOfGrayscaleFeature('EyePairBig', false)
+[mouthWidth, mouthHeight] = getSizeOfGrayscaleFeature('Mouth', true)
+[noseWidth, noseHeight] = getSizeOfGrayscaleFeature('Nose', true)
 
 function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, mergeThresholdBool)
     % Select a certain facial feature.
@@ -12,14 +13,14 @@ function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, 
     end
     
     % Read a video frame and run the face detector.
-    videoReader = VideoReader('testvideos/video4.mp4');
+    videoReader = VideoReader('testvideos/video1.mp4');
     videoFrame = readFrame(videoReader);
     bbox = step(faceDetector, videoFrame);
     featureImage = imcrop(videoFrame,bbox);
     figure
     subplot(2, 1, 1)
     imshow(featureImage)
-    bwImage = bwareaopen(imcomplement(im2bw(featureImage)), 20);
+    bwImage = bwareaopen(imcomplement(im2bw(featureImage)), 50);
     subplot(2, 1, 2)
     imshow(bwImage)
     
