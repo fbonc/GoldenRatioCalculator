@@ -76,7 +76,7 @@ end
 faceWidth = rightEdge(1) - leftEdge(1) 
 
 
-
+chinLocation = bboxFace(2) + bboxFace(4)
 
 
 
@@ -84,7 +84,19 @@ faceWidth = rightEdge(1) - leftEdge(1)
 pupilToLip = mouthLocation(2) - eyesLocation(2)
 
 %nosetochin
-noseToChin = bboxFace(2) + bboxFace(4) - noseLocation(2)
+noseToChin = chinLocation - noseLocation(2)
+
+%lipsToChin
+lipsToChin = chinLocation - mouthLocation(2)
+
+%pupilToNose
+pupilToNose = noseLocation(2) - eyesLocation(2)
+
+%noseToLip
+noseToLip = mouthLocation(2) - noseLocation(2)
+
+%hairlineToPupil
+hairlineToPupil = eyesLocation(2) -  bboxFace(2) 
 
 
 
