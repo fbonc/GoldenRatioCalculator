@@ -1,26 +1,23 @@
 clear, clc, close all
-%eyes
+
+% Eyes
 [eyesWidth, eyesHeight, eyesLocation] = getSizeOfGrayscaleFeature('EyePairBig', false)
 
-%mouth
+% Mouth
 [mouthWidth, mouthHeight, mouthLocation] = getSizeOfGrayscaleFeature('Mouth', true)
 
-%nose
+% Nose
 [noseWidth, noseHeight, noseLocation] = getSizeOfGrayscaleFeature('Nose', false)
 
-%face width and height
+% Face
 videoReader = VideoReader('testvideos/video1.mp4');
 videoFrame = readFrame(videoReader);
-
 
 faceNoseDetector = vision.CascadeObjectDetector("ClassificationModel",'Nose',"MaxSize",[50 50]);
 bboxNose = step(faceNoseDetector, videoFrame);
 
-
-% Draw the returned bounding box around the det ected face.
+% Draw the returned bounding box around the detected face.
 videoFrameNose = insertShape(videoFrame, 'Rectangle', bboxNose);
-
-
 
 bwFace = im2bw(videoFrameNose);
 figure
@@ -74,29 +71,6 @@ end
 %face width
 
 faceWidth = rightEdge(1) - leftEdge(1) 
-
-
-chinLocation = bboxFace(2) + bboxFace(4)
-
-
-
-%pupiltolip
-pupilToLip = mouthLocation(2) - eyesLocation(2)
-
-%nosetochin
-noseToChin = chinLocation - noseLocation(2)
-
-%lipsToChin
-lipsToChin = chinLocation - mouthLocation(2)
-
-%pupilToNose
-pupilToNose = noseLocation(2) - eyesLocation(2)
-
-%noseToLip
-noseToLip = mouthLocation(2) - noseLocation(2)
-
-%hairlineToPupil
-hairlineToPupil = eyesLocation(2) -  bboxFace(2) 
 
 
 
