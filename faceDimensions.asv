@@ -5,10 +5,10 @@ clear, clc, close all
 
 % Create a cascade detector object.
 %
-faceNoseDetector = vision.CascadeObjectDetector("ClassificationModel",'Nose',"MaxSize",[50 50]);
+faceNoseDetector = vision.CascadeObjectDetector('Nose', MergeT);
 
 % Read a video frame and run the face detector.
-videoReader = VideoReader('testvideos/video1.mp4');
+videoReader = VideoReader('testvideos/video4.mp4');
 videoFrame      = readFrame(videoReader);
 bboxNose            = step(faceNoseDetector, videoFrame);
 
@@ -17,12 +17,8 @@ videoFrameNose = insertShape(videoFrame, 'Rectangle', bboxNose);
 figure; imshow(videoFrameNose); title('Detected face');
 
 
-bwFace = im2bw(videoFrameNose);
-figure
-subplot(2,1,1)
-imshow(bwFace);
+
 featureImage = imcrop(videoFrameNose,bboxNose);
-subplot(2,1,2)
 imshow(featureImage)
 
 
@@ -47,28 +43,32 @@ end
 
 %Face Length
 faceDetector = vision.CascadeObjectDetector();
-
 bboxFace = step(faceDetector, videoFrame);
 
-videoFrame = insertShape(videoFrame, 'Rectangle', bboxFace);
-figure; imshow(videoFrame); title('Detected face');
+videoFrameFace = insertShape(videoFrame, 'Rectangle', bboxFace);
+figure; imshow(videoFrameFace); title('Detected face');
 
 faceHeight = bboxFace(4)
 
 
 if ~exist("leftEdge")
-    disp(bboxNose)
     leftEdge = [bboxFace(1),noseLeft(2)];
 end
 if ~exist("rightEdge")
-    disp(bboxNose)
     rightEdge = [bboxFace(1) + bboxFace(3) ,noseRight(2)];
 end
 
-faceWidth = rightEdge(1) - leftEdge(1) 
+faceWidth = rightEdge(1) - leftEdge(1) + bboxNose(3)
 
 
+%Face Length
+faceDetector = vision.CascadeObjectDetector();
+bboxFace = step(faceDetector, videoFrame);
 
+videoFrameFace = insertShape(videoFrame, 'Rectangle', bboxFace);
+figure; imshow(videoFrameFace); title('Detected face');
+
+faceHeight = bboxFace(4)
 
 
     
