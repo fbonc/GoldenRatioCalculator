@@ -12,7 +12,7 @@ function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, 
     end
     
     % Read a video frame and run the face detector.
-    videoReader = VideoReader('testvideos/video1.mp4');
+    videoReader = VideoReader('testvideos/video4.mp4');
     videoFrame = readFrame(videoReader);
     bbox = step(faceDetector, videoFrame);
     featureImage = imcrop(videoFrame,bbox);
