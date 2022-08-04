@@ -1,9 +1,9 @@
 clear, clc, close all
 
-getWidthOfGrayscaleFeature('EyePairBig', false);
-getWidthOfGrayscaleFeature('Mouth', true);
+getSizeOfGrayscaleFeature('EyePairBig', false);
+getSizeOfGrayscaleFeature('Mouth', true);
 
-function width = getWidthOfGrayscaleFeature(feature, mergeThresholdBool)
+function [widthOfFeature, heightOfFeature] = getSizeOfGrayscaleFeature(feature, mergeThresholdBool)
     % Select a certain facial feature.
     if mergeThresholdBool
         faceDetector = vision.CascadeObjectDetector(feature, 'MergeThreshold', 300);
@@ -19,7 +19,7 @@ function width = getWidthOfGrayscaleFeature(feature, mergeThresholdBool)
     figure
     subplot(2, 1, 1)
     imshow(featureImage)
-    bwImage = imcomplement(im2bw(featureImage));
+    bwImage = bwareaopen(imcomplement(im2bw(featureImage)), 20);
     subplot(2, 1, 2)
     imshow(bwImage)
     
@@ -28,11 +28,38 @@ function width = getWidthOfGrayscaleFeature(feature, mergeThresholdBool)
     [LeftY, LeftX] = find(bwImage, 1, 'first');
     [RightY, RightX] = find(bwImage, 1, 'last');
     
-    width = RightX - LeftX;
+    widthOfFeature = RightX - LeftX;
 
     x = LeftX:1:RightX;
 
     yMidpoint = height(bwImage) / 2;
     y = yMidpoint .* ones(1, length(x));
+    line(x, y, 'Color', 'red', 'LineWidth', 4)
+    
+    % Searches for the y value of the vertically-first pixel
+    for i = [1,2]
+        pixelRow = 1;
+            pixelFound = false;
+        while ~pixelFound
+            for j = 1:1:width(bwImage)
+                if bwImage(pixelRow, j) == 1
+                    yVals(1, i) = pixelRow;
+                    pixelFound = true;
+                    break
+                end
+            end
+            pixelRow = pixelRow + 1;
+        end
+        bwImage = flip(bwImage);
+    end
+
+    bwImage = flip(bwImage);
+    yVals(1, 2) = (height(bwImage) - yVals(1, 2));
+    heightOfFeature = yVals(1, 1) - yVals(1, 2);
+
+    y = yVals(1, 1):1:yVals(1, 2);
+    xMidpoint = width(bwImage) / 2;
+    x = xMidpoint .* ones(1, length(y));
+    
     line(x, y, 'Color', 'red', 'LineWidth', 4)
 end
