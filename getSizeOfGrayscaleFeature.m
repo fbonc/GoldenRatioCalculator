@@ -14,7 +14,7 @@ function [widthOfFeature, heightOfFeature, centerOfBBox] = getSizeOfGrayscaleFea
     figure
     subplot(2, 1, 1)
     imshow(featureImage)
-    bwImage = bwareaopen(imcomplement(im2bw(featureImage)), 50);
+    bwImage = bwareaopen(imcomplement(im2bw(featureImage, 0.38)), 150);
     subplot(2, 1, 2)
     imshow(bwImage)
     
