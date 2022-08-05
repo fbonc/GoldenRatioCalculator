@@ -19,4 +19,10 @@ hairlineToPupil = eyesLocation(2) -  bboxFace(2);
 
 overallValue = ((noseToChin / lipsToChin)+(noseToChin / pupilToNose)+(noseWidth / noseToLips)+(eyesWidth / hairlineToPupil)+(mouthHeight / noseWidth)) / 5;
 goldenRatioConstant = (1 + sqrt(5)) / 2;
-round(overallValue / goldenRatioConstant * 10, 1)
+
+% Finds the closeness to the goldenRatioConstant as a value from 1-10
+if goldenRatioConstant >= overallValue
+    round(overallValue / goldenRatioConstant * 10, 1)
+else
+    round((overallValue - goldenRatioConstant) / goldenRatioConstant * 10, 1)
+end
