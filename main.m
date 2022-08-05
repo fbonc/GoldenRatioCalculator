@@ -1,6 +1,6 @@
 clear, clc, close all
 
-videoFilename = 'testvideos/video4.mp4';
+videoFilename = 'testvideos/video1.mp4';
 
 % Data for Eyes, Mouth, Nose
 [eyesWidth, eyesHeight, eyesLocation] = getSizeOfGrayscaleFeature('EyePairBig', videoFilename, false);
